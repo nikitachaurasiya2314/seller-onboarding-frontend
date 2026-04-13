@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { TextField, Button, Box, Typography, Switch, FormControlLabel } from "@mui/material";
-import { api } from "../api";
+import { TextField, Button, Box, Typography } from "@mui/material";
+import { api } from "../../api";
 import { useNavigate } from "react-router-dom";
 
 
@@ -12,12 +12,10 @@ const OtpLogin: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // STEP 1: Send OTP
   const handleSendOtp = async () => {
     try {
       setLoading(true);
       setMessage("");
-      // Uncomment when backend is ready!
       await api.post("/auth/send-otp", { email });
       setStep("otp");
       setMessage("Test OTP sent successfully");
@@ -28,19 +26,18 @@ const OtpLogin: React.FC = () => {
     }
   };
 
-  // STEP 2: Verify OTP
   const handleVerifyOtp = async () => {
     try {
       setLoading(true);
       setMessage("");
 
-      // Uncomment when backend is ready!
 
       const res = await api.post("/auth/verify-otp", {
         email,
         otp,
       });
-      const token = res.data.token;
+      const { token} = res.data;
+
       localStorage.setItem("token", token);
       navigate("/dashboard");
 
